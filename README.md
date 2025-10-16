@@ -1,10 +1,19 @@
 # WSL2 Hyper-V Firewall (CLI)
 
 <p align="center">
-  <a href="assets/wsl_hyperv_firewall.gif">
-    <img src="assets/wsl_hyperv_firewall.gif" alt="Demo GIF" width="720">
-  </a>
+  <video
+    src="assets/wsl_hyperv_firewall.mp4"
+    autoplay
+    loop
+    muted
+    playsinline
+    width="720"
+  >
+    <!-- Fallback für Renderer/Browser ohne <video>-Support -->
+    <img src="assets/wsl_hyperv_firewall.gif" alt="Demo Animation">
+  </video>
 </p>
+
 
 
 Manage Windows **Hyper-V** firewall rules from **WSL**. One command to create/search/delete TCP/UDP/ICMP rules for specific IPs — no GUI, no guesswork.
