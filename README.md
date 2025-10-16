@@ -1,6 +1,26 @@
 # WSL2 Hyper-V Firewall (CLI)
 
 <p align="center">
+  <a href="https://ismaolen.github.io/wsl2-hyperv-firewall/">Live Demo</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#notes">Notes</a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Ismaolen/wsl2-hyperv-firewall/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-informational" alt="License">
+  </a>
+  <img src="https://img.shields.io/badge/Platform-WSL2%20%7C%20Windows-blue" alt="Platform">
+  <img src="https://img.shields.io/badge/ROS-ROS1%2FROS2-6aa84f" alt="ROS">
+  <img src="https://img.shields.io/github/last-commit/Ismaolen/wsl2-hyperv-firewall" alt="Last commit">
+  <a href="https://github.com/Ismaolen/wsl2-hyperv-firewall/stargazers">
+    <img src="https://img.shields.io/github/stars/Ismaolen/wsl2-hyperv-firewall?style=social" alt="Stars">
+  </a>
+</p>
+
+
+<p align="center">
   <a href="docs/assets/wsl_hyperv_firewall.gif">
     <img src="docs/assets/wsl_hyperv_firewall.gif" alt="Demo GIF" width="720">
   </a>
