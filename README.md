@@ -103,5 +103,3 @@ python3 wsl_ros2_hv_firewall.py examples
 
 If this helped your ROS setup in WSL, a ⭐️ would be awesome.
 Spotted a bug or have an idea? **Issues and PRs welcome!**
-
-```
