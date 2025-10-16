@@ -1,11 +1,173 @@
 <!doctype html>
 <html lang="de">
-<meta charset="utf-8">
-<title>WSL2 Hyper-V Firewall – Demo</title>
-<body style="margin:0; background:#0d1117; color:#c9d1d9; font:16px system-ui;">
-  <h1 style="text-align:center; padding:16px;">WSL2 Hyper-V Firewall – Demo</h1>
-  <div style="display:flex; justify-content:center;">
-    <video src="assets/wsl_hyperv_firewall.mp4" autoplay loop muted playsinline width="720"></video>
-  </div>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>WSL2 Hyper-V Firewall (CLI)</title>
+  <style>
+    :root{
+      --bg:#0d1117; --panel:#0f172a; --text:#c9d1d9; --muted:#9aa4ad;
+      --border:#1f2937; --accent:#58a6ff; --code:#0b1220;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px; --radius-sm:12px; --w:940px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", Arial, "Apple Color Emoji", "Segoe UI Emoji"}
+    a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+    .wrap{max-width:var(--w);margin:0 auto;padding:24px}
+    .hero{
+      margin:24px auto 10px; padding:28px 20px;
+      border:1px solid var(--border); border-radius:var(--radius);
+      background:
+        radial-gradient(1200px 450px at 50% -200px, rgba(88,166,255,.10), transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+      box-shadow:var(--shadow);
+      text-align:center;
+    }
+    .title{font-weight:800; letter-spacing:.2px; margin:0 0 6px; font-size:clamp(28px,4vw,40px)}
+    .subtitle{margin:0;color:var(--muted);font-weight:500}
+    .video{
+      margin:22px auto 0; display:flex; justify-content:center; align-items:center;
+    }
+    .video video{
+      width:min(100%, 820px); height:auto; border-radius:var(--radius-sm);
+      display:block; box-shadow:var(--shadow); outline:1px solid var(--border);
+    }
+
+    section{
+      margin:26px auto; padding:22px 22px;
+      border:1px solid var(--border); border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+    h2,h3{line-height:1.25; margin:.2em 0 .4em}
+    h2{font-size:clamp(22px,3.2vw,28px)}
+    h3{font-size:clamp(18px,2.7vw,22px); margin-top:.8em}
+    hr{border:0;border-top:1px solid var(--border); margin:18px 0}
+    p{margin:.65em 0}
+    ul{margin:.4em 0 .8em 1.2em}
+    li{margin:.35em 0}
+
+    blockquote{
+      margin:12px 0; padding:12px 14px;
+      border-left:4px solid var(--accent);
+      background:rgba(88,166,255,.06); border-radius:10px 12px 12px 10px;
+    }
+
+    pre{margin:.85em 0;overflow:auto;background:var(--code); color:#E6EDF3;
+        border:1px solid var(--border); border-radius:12px; padding:14px}
+    code{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:.95em}
+    pre code{font-size:.92em}
+    .foot{opacity:.85;text-align:center;margin:18px 0}
+
+    /* Small screens */
+    @media (max-width: 560px){
+      .wrap{padding:18px}
+      section{padding:18px}
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap hero">
+    <h1 class="title">WSL2 Hyper-V Firewall (CLI)</h1>
+    <p class="subtitle">WSL2 Hyper-V Firewall – Demo</p>
+    <div class="video">
+      <video src="assets/wsl_hyperv_firewall.mp4" autoplay loop muted playsinline></video>
+    </div>
+    <p class="foot">
+      Falls das Video nicht automatisch startet:
+      <a href="assets/wsl_hyperv_firewall.mp4">MP4 direkt öffnen</a>
+    </p>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <p>Manage Windows <strong>Hyper-V</strong> firewall rules from <strong>WSL</strong>. One command to create/search/delete TCP/UDP/ICMP rules for specific IPs — no GUI, no guesswork.</p>
+      <blockquote>
+        <p>Script: <code>wsl_ros2_hv_firewall.py</code> (run inside WSL; it calls <code>powershell.exe</code> on Windows)</p>
+      </blockquote>
+    </section>
+
+    <section id="why">
+      <h2>Why this is useful (ROS / ROS 2)</h2>
+      <p>If your robot is on the LAN and your nodes run in <strong>WSL2</strong>, Windows’ Hyper-V firewall often blocks:</p>
+      <ul>
+        <li><strong>ROS 2 DDS discovery</strong> (multicast/broadcast over UDP)</li>
+        <li><strong>ROS 1 master / services</strong> (TCP ports like <code>11311</code>)</li>
+        <li>Simple reachability (<strong>ICMP/ping</strong>)</li>
+      </ul>
+      <p>This tool opens the right paths between <strong>WSL ↔ Windows ↔ your robot’s IP(s)</strong> so discovery works, topics show up, and connections stop timing out — without disabling the firewall or allowing the whole subnet.</p>
+    </section>
+
+    <section id="netnote">
+      <h2>Networking note (required for ROS)</h2>
+      <p>Enable WSL’s <strong>mirrored networking</strong> so DDS/multicast and inbound traffic reach WSL correctly:</p>
+      <pre><code># %UserProfile%\.wslconfig
+[wsl2]
+networkingMode=mirrored</code></pre>
+      <p>Then restart WSL:</p>
+      <pre><code>wsl --shutdown</code></pre>
+      <p>(These rules target Hyper-V in mirrored mode and play nicely with ROS.)</p>
+    </section>
+
+    <section id="features">
+      <h2>Features</h2>
+      <ul>
+        <li>Create / delete / search Hyper-V firewall rules</li>
+        <li>TCP / UDP / ICMPv4, <strong>inbound / outbound / both</strong></li>
+        <li>Multiple IPs, custom local/remote ports</li>
+        <li><strong>Idempotent</strong> (won’t duplicate)</li>
+        <li><code>--dry-run</code> to preview</li>
+        <li>Optional JSON snapshot with <code>--db</code></li>
+        <li>Safety guard for mass deletes (override with <code>--all</code>)</li>
+      </ul>
+    </section>
+
+    <section id="reqs">
+      <h2>Requirements</h2>
+      <ul>
+        <li>Windows 10/11 with Hyper-V (admin rights for firewall changes)</li>
+        <li>WSL (Ubuntu etc.), Python 3</li>
+        <li><code>powershell.exe</code> reachable from WSL</li>
+      </ul>
+    </section>
+
+    <section id="quick">
+      <h2>Quick start</h2>
+      <pre><code># Help
+python3 wsl_ros2_hv_firewall.py -h
+
+# ROS/ROS2: allow all protocols IN+OUT for a robot IP (scoped to a single host)
+python3 wsl_ros2_hv_firewall.py create --ip 192.168.0.213
+
+# ROS1 (tighter): allow TCP IN for ports 11311,8080 only
+python3 wsl_ros2_hv_firewall.py create \
+  --ip 192.168.0.213 \
+  --protocol tcp \
+  --direction in \
+  --local-ports 11311,8080 \
+  --remote-ports 11311,8080
+
+# Search rules (and also write a JSON snapshot)
+python3 wsl_ros2_hv_firewall.py --db search
+
+# Delete by exact/wildcard name (dry run first)
+python3 wsl_ros2_hv_firewall.py delete --name 'WSL-ROS2-*' --dry-run
+
+# More examples
+python3 wsl_ros2_hv_firewall.py examples</code></pre>
+    </section>
+
+    <section id="notes">
+      <h3>Notes</h3>
+      <ul>
+        <li><strong>Persistence is off by default.</strong> Add <code>--db</code> (before or after the subcommand) to write <code>wsl_ros2_firewall_rules.json</code>.</li>
+        <li>Mass deletes are limited; pass <code>--all</code> to confirm large removals.</li>
+      </ul>
+      <hr />
+      <p>If this helped your ROS setup in WSL, a ⭐️ would be awesome.<br>
+      Spotted a bug or have an idea? <strong>Issues and PRs welcome!</strong></p>
+    </section>
+  </main>
 </body>
 </html>
