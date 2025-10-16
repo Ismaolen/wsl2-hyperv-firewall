@@ -1,17 +1,9 @@
 # WSL2 Hyper-V Firewall (CLI)
 
 <p align="center">
-  <video
-    src="assets/wsl_hyperv_firewall.mp4"
-    autoplay
-    loop
-    muted
-    playsinline
-    width="720"
-  >
-    <!-- Fallback für Renderer/Browser ohne <video>-Support -->
-    <img src="assets/wsl_hyperv_firewall.gif" alt="Demo Animation">
-  </video>
+  <a href="assets/wsl_hyperv_firewall.gif">
+    <img src="assets/wsl_hyperv_firewall.gif" alt="Demo GIF" width="720">
+  </a>
 </p>
 
 
