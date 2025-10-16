@@ -1,8 +1,8 @@
 # WSL2 Hyper-V Firewall (CLI)
 
 <p align="center">
-  <a href="assets/wsl_hyperv_firewall.gif">
-    <img src="assets/wsl_hyperv_firewall.gif" alt="Demo GIF" width="720">
+  <a href="docs/assets/wsl_hyperv_firewall.gif">
+    <img src="docs/assets/wsl_hyperv_firewall.gif" alt="Demo GIF" width="720">
   </a>
 </p>
 
