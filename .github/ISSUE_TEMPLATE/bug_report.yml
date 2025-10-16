@@ -1,0 +1,45 @@
+name: "Bug report"
+description: "Report a bug or regression"
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+assignees: []
+body:
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: "Before submitting"
+      options:
+        - label: "I searched existing Issues and Discussions."
+          required: true
+        - label: "I’m using the latest commit/tag."
+          required: true
+  - type: input
+    id: env
+    attributes:
+      label: "Environment"
+      description: "Windows & WSL info (e.g., Windows 11 23H2, WSL2 Ubuntu 24.04, mirrored mode)"
+      placeholder: "Windows 11 23H2 • WSL2 Ubuntu 24.04 • networkingMode=mirrored"
+  - type: textarea
+    id: repro
+    attributes:
+      label: "Steps to reproduce"
+      description: "Exact steps/commands"
+      placeholder: "1) ...\n2) ...\n3) ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected behavior"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual behavior & logs"
+      render: bash
+  - type: textarea
+    id: extra
+    attributes:
+      label: "Additional context"
+      description: "Screenshots, configs, anything helpful"

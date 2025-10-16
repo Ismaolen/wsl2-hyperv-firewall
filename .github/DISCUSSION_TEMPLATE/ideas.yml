@@ -1,0 +1,21 @@
+title: "Idea: <short summary>"
+labels: ["idea"]
+about: "Propose an idea and gather feedback before opening an issue"
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: "Describe the idea"
+      placeholder: "What and why?"
+    validations:
+      required: true
+  - type: textarea
+    id: benefits
+    attributes:
+      label: "Benefits"
+      placeholder: "Who benefits and how?"
+  - type: textarea
+    id: notes
+    attributes:
+      label: "Notes / references"
+      placeholder: "Prior art, links, sketches"

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "Q&A / Help (GitHub Discussions)"
+    url: "https://github.com/Ismaolen/wsl2-hyperv-firewall/discussions/categories/q-a"
+    about: "Ask questions or get help here before filing an issue."
+  - name: "Live Demo"
+    url: "https://ismaolen.github.io/wsl2-hyperv-firewall/"
+    about: "See the CLI demo and usage."

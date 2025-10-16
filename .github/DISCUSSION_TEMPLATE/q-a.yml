@@ -1,0 +1,25 @@
+title: "Q&A: <short summary>"
+labels: ["question"]
+about: "Ask a question and include environment + steps tried"
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: "Question"
+      placeholder: "What do you want to achieve?"
+    validations:
+      required: true
+  - type: textarea
+    id: env
+    attributes:
+      label: "Environment"
+      placeholder: "Windows 11 23H2 • WSL2 Ubuntu 24.04 • networkingMode=mirrored"
+  - type: textarea
+    id: tried
+    attributes:
+      label: "What you tried"
+      placeholder: "Commands, configs, links"
+  - type: textarea
+    id: extra
+    attributes:
+      label: "Additional context"

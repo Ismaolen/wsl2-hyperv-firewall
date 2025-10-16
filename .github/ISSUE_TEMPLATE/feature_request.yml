@@ -1,0 +1,40 @@
+name: "Feature request"
+description: "Suggest an improvement or new capability"
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: "Problem to solve"
+      description: "What’s the pain point or use case?"
+      placeholder: "When ..., I can’t ..."
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: "Proposed solution"
+      description: "What should happen? CLI flags, behavior, examples"
+      placeholder: "Add option ... so that ..."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives considered"
+      placeholder: "Tried ..., but ..."
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: "Scope"
+      options:
+        - label: "Docs/examples update needed"
+        - label: "Breaking change"
+        - label: "Windows-only"
+  - type: textarea
+    id: context
+    attributes:
+      label: "Additional context"
+      placeholder: "Related links, screenshots"
