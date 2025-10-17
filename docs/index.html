@@ -6,6 +6,43 @@
   <meta name="color-scheme" content="dark light" />
   <title>WSL2 Hyper-V Firewall (CLI)</title>
 
+  <!-- ✅ SEO: Meta Description (kurz, keyword-dicht) -->
+  <meta name="description" content="Manage Windows Hyper-V firewall rules from WSL or Windows PowerShell. Enable mirrored networking for ROS 2 DDS discovery and add targeted UDP/ICMP/TCP rules for your robot’s IP. Quick start examples included.">
+
+  <!-- ✅ SEO: Canonical URL — PASSE AN -->
+  <link rel="canonical" href="https://ismaolen.github.io/wsl2-hyperv-firewall/" />
+
+  <!-- ✅ Social Sharing (Open Graph) — PASSE AN -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WSL2 Hyper-V Firewall (CLI)">
+  <meta property="og:description" content="Hyper-V firewall from WSL or Windows PowerShell. Mirrored networking + ROS 2 DDS discovery fixes.">
+  <meta property="og:url" content="https://ismaolen.github.io/wsl2-hyperv-firewall/">
+  <meta property="og:image" content="https://github.com/Ismaolen/wsl2-hyperv-firewall/blob/main/docs/assets/wsl_hyperv_firewall.gif">
+
+  <!-- ✅ Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="WSL2 Hyper-V Firewall (CLI)">
+  <meta name="twitter:description" content="Hyper-V firewall from WSL or Windows PowerShell. Mirrored networking + ROS 2 DDS discovery fixes.">
+  <meta name="twitter:image" content="https://github.com/Ismaolen/wsl2-hyperv-firewall/blob/main/docs/assets/wsl_hyperv_firewall.gif">
+
+  <!-- ✅ Structured Data: FAQPage for the H1 question -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why can’t ROS 2 find my robots on the LAN when I run it inside WSL2?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Common causes include NAT/missing multicast forwarding and restrictive Hyper-V/Windows Firewall rules. Enable WSL2’s mirrored networking in %UserProfile%\\ .wslconfig and add targeted UDP/ICMP/TCP rules for your robot’s IP. See the Quick start examples on this page."
+        }
+      }
+    ]
+  }
+  </script>
+
   <style>
     :root{
       --bg:#0d1117; --panel:#0f172a; --text:#c9d1d9; --muted:#9aa4ad;
@@ -28,6 +65,7 @@
         linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
       box-shadow:var(--shadow);
     }
+    .muted { color: var(--muted); }
     .qbanner h1{
       margin:0; font-weight:900; letter-spacing:.2px;
       font-size:clamp(24px,4.2vw,38px);
@@ -96,6 +134,14 @@
 
     .foot{opacity:.85;text-align:center;margin:18px 0}
 
+
+
+.refs { margin: .4em 0 .2em 1.2em; padding: 0; }
+.refs li { margin: .5em 0; }
+.refs a { font-weight: 600; }
+
+
+
     /* Micro-animations */
     @keyframes fadeUp{
       from{opacity:0; transform:translateY(6px)}
@@ -145,7 +191,25 @@
       <p>This tool opens the right paths between <strong>WSL ↔ Windows ↔ your robot’s IP(s)</strong> so discovery works, topics show up, and connections stop timing out — without disabling the firewall or allowing the whole subnet.</p>
     </section>
 
-    <section id="netnote">
+   
+<!-- New: Troubleshooting FAQ -->
+<section id="faq-troubleshooting">
+  <h2>FAQ — Troubleshooting (“it doesn’t work”)</h2>
+  <ul>
+    <li><strong>Why does DDS / multicast fail between Windows and WSL2?</strong></li>
+    <li><strong>Why can I ping devices on the LAN but ROS 2 topics don’t show up in WSL2?</strong></li>
+    <li><strong>Why doesn’t WSL2 receive multicast packets from the host / network?</strong></li>
+    <li><strong>How do I fix WSL2 not forwarding UDP multicast?</strong></li>
+  </ul>
+  <p class="muted">
+  (These reflect common reports: NAT/mirroring differences and Windows/Hyper-V firewall behavior frequently break DDS/multicast discovery.)
+  <a href="https://stackoverflow.com/questions/75941344/ros2-communication-between-wsl-and-rpi/79564248#79564248" target="_blank" rel="noopener">Stack Overflow</a>
+</p>
+</section>
+
+<section id="netnote">
+
+
       <h2>Networking note (required for ROS)</h2>
       <p>Enable WSL’s <strong>mirrored networking</strong> so DDS/multicast and inbound traffic reach WSL correctly:</p>
       <pre><button class="copy-btn" aria-label="Copy code">Copy</button><code># %UserProfile%\.wslconfig
@@ -154,9 +218,34 @@ networkingMode=mirrored</code></pre>
       <p>Then restart WSL:</p>
       <pre><button class="copy-btn" aria-label="Copy code">Copy</button><code>wsl --shutdown</code></pre>
       <p>(These rules target Hyper-V in mirrored mode and play nicely with ROS.)</p>
-    </section>
+    
 
-    <section id="features">
+
+
+</section>
+
+<!-- New: Configuration / How-to FAQ -->
+<section id="faq-config">
+  <h2>FAQ — Configuration / How-to</h2>
+  <ul>
+    <li><strong>How do I enable <code>networkingMode=mirrored</code> in WSL2 to allow ROS 2 multicast?</strong></li>
+    <li><strong>How do I configure the Hyper-V firewall so ROS 2 DDS discovery works?</strong></li>
+    <li><strong>Which Hyper-V firewall rules are required to allow WSL2 ↔ LAN device communication?</strong></li>
+    <li><strong>How do I bridge or connect the vEthernet (WSL) interface to my physical network adapter?</strong></li>
+    <li><strong>What <code>.wslconfig</code> settings are recommended for running ROS / ROS2 in WSL2?</strong></li>
+  </ul>
+  <p class="muted">
+    (Mirrored mode can help but has edge cases; Hyper-V-specific firewall rules are the documented way to allow inbound traffic to the WSL VM.)
+    <a href="https://learn.microsoft.com/en-us/windows/wsl/networking" target="_blank" rel="noopener">Microsoft Learn</a>
+  </p>
+</section>
+
+<section id="features">
+
+
+
+
+
       <h2>Features</h2>
       <ul>
         <li>Create / delete / search Hyper-V firewall rules</li>
@@ -178,7 +267,7 @@ networkingMode=mirrored</code></pre>
       </ul>
     </section>
 
-    <!-- Neuer Abschnitt: Windows PowerShell (ohne den bestehenden Text zu ändern) -->
+    <!-- Windows PowerShell Hinweis -->
     <section id="powershell">
       <h2>Windows PowerShell</h2>
       <p>Zusätzlich zu WSL kannst du das Skript <strong>auch direkt in Windows PowerShell</strong> ausführen (ohne WSL):</p>
@@ -186,9 +275,27 @@ networkingMode=mirrored</code></pre>
 # oder
 python wsl_ros2_hv_firewall.py -h</code></pre>
       <p>Voraussetzung: Python ist unter Windows installiert/auffindbar. Das Skript ruft die benötigten PowerShell-Cmdlets lokal auf.</p>
-    </section>
+    
+</section>
 
-    <section id="quick">
+<!-- New: Commands / Examples FAQ -->
+<section id="faq-commands">
+  <h2>FAQ — Commands / Examples</h2>
+  <ul>
+    <li><strong>Which PowerShell commands open UDP / ICMP / TCP for a single host in Hyper-V?</strong></li>
+    <li><strong>Example: How do I create firewall rules for ROS1 (port 11311) via script?</strong></li>
+    <li><strong>How can I test multicast routing between Windows, WSL2 and a Raspberry Pi?</strong></li>
+  </ul>
+  <p class="muted">
+    (There are documented PowerShell <code>Get/Set/New-NetFirewallHyperVRule</code> flows and many community example scripts.)
+    <a href="https://learn.microsoft.com/search/?terms=New-NetFirewallHyperVRule" target="_blank" rel="noopener">Microsoft Learn</a>
+  </p>
+</section>
+
+<section id="quick">
+
+
+
       <h2>Quick start</h2>
       <pre><button class="copy-btn" aria-label="Copy code">Copy</button><code># Help
 python3 wsl_ros2_hv_firewall.py -h
@@ -212,9 +319,44 @@ python3 wsl_ros2_hv_firewall.py delete --name 'WSL-ROS2-*' --dry-run
 
 # More examples
 python3 wsl_ros2_hv_firewall.py examples</code></pre>
-    </section>
+    
 
-    <section id="notes">
+</section>
+
+<!-- New: Troubleshooting / Debugging FAQ -->
+<section id="faq-debugging">
+  <h2>FAQ — Troubleshooting / Debugging</h2>
+  <ul>
+    <li><strong>How do I check whether Windows is dropping multicast before it reaches WSL2?</strong></li>
+    <li><strong>Which logs and tools help with debugging (Wireshark on host vs WSL, <code>netstat</code>, <code>ss</code>)?</strong></li>
+    <li><strong>Why does running a “multicast consumer” on Windows sometimes allow WSL to receive packets?</strong></li>
+  </ul>
+  <p class="muted">
+    (Common debugging steps include using <code>ros2 multicast send/receive</code>, Wireshark on the host interface, and verifying subnet/mirroring.)
+    <a href="https://docs.ros.org/en/rolling/How-To-Guides/Installation-Troubleshooting.html?utm_source=chatgpt.com" target="_blank" rel="noopener">docs.ros.org</a>
+  </p>
+
+
+</section>
+
+<!-- New: Security / Production Readiness FAQ -->
+<section id="faq-security">
+  <h2>FAQ — Security / Production readiness</h2>
+  <ul>
+    <li><strong>Is it safe to open Hyper-V firewall rules for entire subnets?</strong></li>
+    <li><strong>How can I make firewall rules idempotent and reversible via a script?</strong></li>
+  </ul>
+  <p class="muted">
+    (Best practice: scope rules to specific VM/host IPs and ports; use scripted <code>Get-*</code> checks before creating/deleting rules.)
+    <a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/network-security/windows-firewall/hyper-v-firewall" target="_blank" rel="noopener">Microsoft Learn</a>
+  </p>
+</section>
+
+<section id="notes">
+
+
+
+
       <h3>Notes</h3>
       <ul>
         <li><strong>Persistence is off by default.</strong> Add <code>--db</code> (before or after the subcommand) to write <code>wsl_ros2_firewall_rules.json</code>.</li>
@@ -223,9 +365,67 @@ python3 wsl_ros2_hv_firewall.py examples</code></pre>
       <hr />
       <p>If this helped your ROS setup in WSL, a ⭐️ would be awesome.<br>
       Spotted a bug or have an idea? <strong>Issues and PRs welcome!</strong></p>
-    </section>
+    
+      </section>
 
-    <p class="foot">© 2025 — WSL2 Hyper-V Firewall (CLI)</p>
+<!-- New: References -->
+<section id="references">
+  <h2>References</h2>
+  <ol class="refs">
+    <li>
+      <a href="https://stackoverflow.com/questions/75941344/ros2-communication-between-wsl-and-rpi?utm_source=chatgpt.com" target="_blank" rel="noopener">
+        raspberry pi - ROS2 communication between WSL and rpi
+      </a>
+      <span class="muted">— Stack Overflow</span>
+    </li>
+    <li>
+      <a href="https://learn.microsoft.com/en-us/windows/wsl/networking?utm_source=chatgpt.com" target="_blank" rel="noopener">
+        Accessing network applications with WSL
+      </a>
+      <span class="muted">— Microsoft Learn</span>
+    </li>
+    <li>
+      <a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/network-security/windows-firewall/hyper-v-firewall?utm_source=chatgpt.com" target="_blank" rel="noopener">
+        Configure Hyper-V firewall
+      </a>
+      <span class="muted">— Microsoft Learn</span>
+    </li>
+    <li>
+      <a href="https://docs.ros.org/en/rolling/How-To-Guides/Installation-Troubleshooting.html?utm_source=chatgpt.com" target="_blank" rel="noopener">
+        Installation troubleshooting — ROS 2 Documentation
+      </a>
+      <span class="muted">— docs.ros.org</span>
+    </li>
+    <li>
+      <a href="https://github.com/microsoft/WSL/discussions/10614?utm_source=chatgpt.com" target="_blank" rel="noopener">
+        not getting udp multicast working in the new mirrored …
+      </a>
+      <span class="muted">— GitHub Discussions</span>
+    </li>
+
+    <!-- Extra, empfohlen -->
+    <li>
+      <a href="https://docs.ros.org/en/ros2_packages/humble/api/ros2multicast/" target="_blank" rel="noopener">
+        ros2multicast — CLI tool (send/receive)
+      </a>
+      <span class="muted">— docs.ros.org</span>
+    </li>
+    <li>
+      <a href="https://learn.microsoft.com/en-us/windows/wsl/wsl-config" target="_blank" rel="noopener">
+        Advanced settings in WSL (.wslconfig) — networkingMode=mirrored
+      </a>
+      <span class="muted">— Microsoft Learn</span>
+    </li>
+    <li>
+      <a href="https://devblogs.microsoft.com/commandline/windows-subsystem-for-linux-september-2023-update/" target="_blank" rel="noopener">
+        WSL update introducing “Mirrored” networking
+      </a>
+      <span class="muted">— Microsoft DevBlogs</span>
+    </li>
+  </ol>
+</section>
+
+<p class="foot">© 2025 — WSL2 Hyper-V Firewall (CLI)</p>
   </main>
 
   <script>
