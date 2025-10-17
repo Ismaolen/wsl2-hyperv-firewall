@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap discovery (best practice)
+Sitemap: https://ismaolen.github.io/wsl2-hyperv-firewall/sitemap.xml
