@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# absolute URL zur Sitemap (wichtig)
 Sitemap: https://ismaolen.github.io/wsl2-hyperv-firewall/sitemap.xml
